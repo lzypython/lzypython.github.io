@@ -1,0 +1,419 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>神经网络对多变量的性别结果预测 | 咋的个人博客</title><meta name="author" content="咋"><meta name="copyright" content="咋"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="神经网络这几年可谓是火得一塌糊涂，它是目前最为火热的研究方向——深度学习的基础。在神经网络刚被发明之初，人们欢呼雀跃，认为是创造出来了比人更强的思维怪兽。它类比于人的神经元的工作方式，通过信号传递，不断调整权重，最终输出结果！本文将根据一个多参数预测男女性别的实际案例向大家！ 一、什么是神经网络？简而言之，神经网络就是函数：输入数据，输出结果！神经网络类似人类大脑，由一个个神经元组成，每个神经">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神经网络对多变量的性别结果预测">
+<meta property="og:url" content="https://www.lizhiyang.xyz/2023/08/21/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AF%B9%E5%A4%9A%E5%8F%98%E9%87%8F%E7%9A%84%E6%80%A7%E5%88%AB%E7%BB%93%E6%9E%9C%E9%A2%84%E6%B5%8B/index.html">
+<meta property="og:site_name" content="咋的个人博客">
+<meta property="og:description" content="神经网络这几年可谓是火得一塌糊涂，它是目前最为火热的研究方向——深度学习的基础。在神经网络刚被发明之初，人们欢呼雀跃，认为是创造出来了比人更强的思维怪兽。它类比于人的神经元的工作方式，通过信号传递，不断调整权重，最终输出结果！本文将根据一个多参数预测男女性别的实际案例向大家！ 一、什么是神经网络？简而言之，神经网络就是函数：输入数据，输出结果！神经网络类似人类大脑，由一个个神经元组成，每个神经">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic-bed-ar2.pages.dev/img/1.jpg">
+<meta property="article:published_time" content="2023-08-20T16:00:17.000Z">
+<meta property="article:modified_time" content="2023-08-20T16:00:17.000Z">
+<meta property="article:author" content="咋">
+<meta property="article:tag" content="深度学习,Java,Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic-bed-ar2.pages.dev/img/1.jpg"><link rel="shortcut icon" href="https://pic-bed-ar2.pages.dev/img/14.jpg"><link rel="canonical" href="https://www.lizhiyang.xyz/2023/08/21/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AF%B9%E5%A4%9A%E5%8F%98%E9%87%8F%E7%9A%84%E6%80%A7%E5%88%AB%E7%BB%93%E6%9E%9C%E9%A2%84%E6%B5%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '神经网络对多变量的性别结果预测',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-21 00:00:17'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic-bed-ar2.pages.dev/img/12.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">73</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 文章分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope-open"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://pic-bed-ar2.pages.dev/img/1.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="咋的个人博客"><span class="site-name">咋的个人博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 文章分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope-open"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">神经网络对多变量的性别结果预测</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-08-20T16:00:17.000Z" title="发表于 2023-08-21 00:00:17">2023-08-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-20T16:00:17.000Z" title="更新于 2023-08-21 00:00:17">2023-08-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE/">实战项目</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="神经网络对多变量的性别结果预测"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><meta name="referrer" content="no-referrer" />
+
+<p>神经网络这几年可谓是火得一塌糊涂，它是目前最为火热的研究方向——深度学习的基础。在神经网络刚被发明之初，人们欢呼雀跃，认为是创造出来了比人更强的思维怪兽。它类比于人的神经元的工作方式，通过信号传递，不断调整权重，最终输出结果！本文将根据一个多参数预测男女性别的实际案例向大家！</p>
+<h1 id="一、什么是神经网络？"><a href="#一、什么是神经网络？" class="headerlink" title="一、什么是神经网络？"></a>一、什么是神经网络？</h1><p><strong>简而言之，神经网络就是函数：输入数据，输出结果！</strong><br><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C&spm=1001.2101.3001.7020">神经网络</a>类似人类大脑，由一个个神经元组成，每个神经元和多个其他神元连接，形成网状。单个神经元只会解决最简单的问题，但是组合成一个分层的整体，就可以解决复杂问题。<br>顾名思义，神经网络是类似于人脑神经元的一种东西。学过生物的我们都知道，神经元彼此之间相互联系，传入一个信号后，可以在神经元之间不断传递，最终促使肌体做出反应，比如被针扎了之后会马上缩手。你也可以笼统的认为神经网络就是一个函数，传入一个或多个参数后，经过一系列变换，输出一个或多个参数。最简单的以y&#x3D;x+1为例，传入一个值就能输出一个值，当传入x&#x3D;2的时候输出3，x&#x3D;3的时候输出4。不过，真正的神经网络要复杂的多。想要继续深入学习可以参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38958840/article/details/118608293?ops_request_misc=&request_id=&biz_id=102&utm_term=%E4%BB%80%E4%B9%88%E6%98%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-1-118608293.142%5Ev59%5Econtrol_1,201%5Ev3%5Econtrol_2,213%5Ev1%5Econtrol&spm=1018.2226.3001.4187">什么是神经网络？</a></p>
+<h1 id="二、神经网络的工作原理"><a href="#二、神经网络的工作原理" class="headerlink" title="二、神经网络的工作原理"></a>二、神经网络的工作原理</h1><p>首先让我们来看一个经典的神经网络。这是一个包含三个层次的神经网络：<strong>输入层、中间层</strong>（也叫<strong>隐藏层</strong>）、<strong>输出层。</strong><br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.nlark.com/yuque/0/2023/png/34335114/1692688402681-a66d8891-ec55-4596-b69b-22947ab69cd5.png#averageHue=%23f9f9f9&clientId=u88b7eb29-3b55-4&from=paste&id=u77bd883e&originHeight=739&originWidth=526&originalType=url&ratio=1.4015624523162842&rotation=0&showTitle=false&status=done&style=none&taskId=u288b9214-7335-45c8-afac-d54ed7392ea&title=">编辑<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.nlark.com/yuque/0/2023/png/34335114/1692688402697-7e84d873-f841-47ce-8ead-f37812d70460.png#averageHue=%23faf9f9&clientId=u88b7eb29-3b55-4&from=paste&id=uc0597666&originHeight=536&originWidth=833&originalType=url&ratio=1.4015624523162842&rotation=0&showTitle=false&status=done&style=none&taskId=uec76a94a-8272-4245-820a-ccb867158d9&title=">编辑<br>输入层和输出层比较好理解，一个输入一个输出。最难的是中间层，它相当于一个黑匣子，你也可以把他看成一个函数拟合器，它可以拟合任何函数。它的工作原理可以分为以下几个方面：</p>
+<ul>
+<li><p>接受输入的变量，并以此作为信息来源；</p>
+</li>
+<li><p>拥有权重变量，并以此作为知识；</p>
+</li>
+<li><p>融合信息和知识，输出预测结果</p>
+</li>
+</ul>
+<p>目前为止所有的神经网络都是这样工作的，他使用权重中的知识解释输入数据的信息。<br>另一种理解神经网络权重的方法是将权重作为网络的输入和预测之间敏感度的度量：如果权重非常高，即使是最小的输入也可以对预测结果产生非常大的影响；如果权重很小，那就算是很大的输入也只能对预测结果产生很小的扰动。<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.nlark.com/yuque/0/2023/png/34335114/1692688402359-03ac4fe1-ab19-47b6-9c74-1265bb6d5ba4.png#averageHue=%23090909&clientId=u88b7eb29-3b55-4&from=paste&id=u8f810d6a&originHeight=718&originWidth=1260&originalType=url&ratio=1.4015624523162842&rotation=0&showTitle=false&size=77714&status=done&style=none&taskId=u7a197630-3836-484c-a5e1-9a0d5c9ce76&title=" alt="image.png">编辑<br>在这里引入一篇博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_52587975/article/details/119319010?ops_request_misc=&request_id=&biz_id=102&utm_term=%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-119319010.142%5Ev62%5Econtrol_1,201%5Ev3%5Econtrol_2,213%5Ev1%5Econtrol&spm=1018.2226.3001.4187">神经网络工作原理</a>，感兴趣的小伙伴可以去看看！</p>
+<h1 id="三、实际场景描述"><a href="#三、实际场景描述" class="headerlink" title="三、实际场景描述"></a>三、实际场景描述</h1><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.nlark.com/yuque/0/2023/png/34335114/1692688402382-126a0be3-5d8a-4b74-a53f-aaae445fedd9.png#averageHue=%23f8f8f8&clientId=u88b7eb29-3b55-4&from=paste&id=u743f4e37&originHeight=319&originWidth=900&originalType=url&ratio=1.4015624523162842&rotation=0&showTitle=false&size=172777&status=done&style=none&taskId=ue2332859-7f6c-4094-aa7d-d303a57d777&title=" alt="image.png">编辑<br>用KNN方法，将1-8数据做为训练集，判断第9条数据是男人还是女人？<br>思路：根据1-8给出的身高，体重，脚掌长度作为输入，性别作为输出训练一个神经网络，并将第9条数据传入，判断ta的性别。</p>
+<h1 id="四、代码"><a href="#四、代码" class="headerlink" title="四、代码"></a>四、代码</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">@Project ：python </span></span><br><span class="line"><span class="string">@File    ：knn.py</span></span><br><span class="line"><span class="string">@IDE     ：PyCharm </span></span><br><span class="line"><span class="string">@Author  ：咋</span></span><br><span class="line"><span class="string">@Date    ：2022/10/25 10:41 </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="comment">#预测男女性别</span></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a=([(<span class="number">6</span>,<span class="number">180</span>,<span class="number">12</span>),</span><br><span class="line">(<span class="number">5.92</span>,<span class="number">190</span>,<span class="number">11</span>),</span><br><span class="line">(<span class="number">5.58</span>,<span class="number">170</span>,<span class="number">12</span>),</span><br><span class="line">(<span class="number">5</span>,<span class="number">100</span>,<span class="number">6</span>),</span><br><span class="line">(<span class="number">5.5</span>,<span class="number">150</span>,<span class="number">8</span>),</span><br><span class="line">(<span class="number">5.42</span>,<span class="number">130</span>,<span class="number">7</span>),</span><br><span class="line">(<span class="number">5.92</span>,<span class="number">165</span>,<span class="number">10</span>),</span><br><span class="line">(<span class="number">5.75</span>,<span class="number">150</span>,<span class="number">9</span>)])</span><br><span class="line"><span class="comment"># mx=np.max(a)</span></span><br><span class="line"><span class="comment"># mn=np.min(a)</span></span><br><span class="line"><span class="comment"># b=(a-mn)/(mx-mn)</span></span><br><span class="line"><span class="comment"># print(b)</span></span><br><span class="line"></span><br><span class="line">y=[<span class="string">&#x27;male&#x27;</span>,<span class="string">&#x27;male&#x27;</span>,<span class="string">&#x27;male&#x27;</span>,<span class="string">&#x27;female&#x27;</span>,<span class="string">&#x27;female&#x27;</span>,<span class="string">&#x27;female&#x27;</span>,<span class="string">&#x27;male&#x27;</span>,<span class="string">&#x27;female&#x27;</span>]</span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">neigh=KNeighborsClassifier(n_neighbors=<span class="number">6</span>)</span><br><span class="line">neigh.fit(a,y)</span><br><span class="line">Z=neigh.predict(np.array([[<span class="number">6</span>,<span class="number">130</span>,<span class="number">8</span>]]))</span><br><span class="line"><span class="built_in">print</span>(Z)</span><br></pre></td></tr></table></figure>
+<p>结果为：female<br>归一化也是神经网络经常要进行的操作，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mx=np.<span class="built_in">max</span>(a)</span><br><span class="line">mn=np.<span class="built_in">min</span>(a)</span><br><span class="line">b=(a-mn)/(mx-mn)</span><br><span class="line"><span class="built_in">print</span>(b)</span><br></pre></td></tr></table></figure>
+<h1 id="五、KNeighborsClassifier算法"><a href="#五、KNeighborsClassifier算法" class="headerlink" title="五、KNeighborsClassifier算法"></a>五、KNeighborsClassifier算法</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KNeighborsClassifier(n_neighbors=<span class="number">5</span>,weights=’uniform’,algorithm=’auto’,leaf_size=<span class="number">30</span>,p=<span class="number">2</span>,metric=’minkowski’,metric_params=<span class="literal">None</span>,n_jobs=<span class="number">1</span>,**kwargs)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>n_neighbors: int, 可选参数(默认为 5)用于kneighbors查询的默认邻居的数量</p>
+</li>
+<li><pre><code>weights（权重）: str or callable(自定义类型), 可选参数(默认为 ‘uniform’) 	用于预测的权重函数。可选参数如下: 	‘uniform’ : 统一的权重. 在每一个邻居区域里的点的权重都是一样的。
+</code></pre>
+<p> ‘distance’ : 权重点等于他们距离的倒数。使用此函数，更近的邻居对于所预测的点的影响更大。<br> [callable] : 一个用户自定义的方法，此方法接收一个距离的数组，然后返回一个相同形状并且包含权重的数组。 	</p>
+</li>
+<li><pre><code>algorithm（算法）: &#123;‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’&#125;, 可选参数（默认为 ‘auto’） 	计算最近邻居用的算法： 	‘ball_tree’ 是为了克服kd树高纬失效而发明的，其构造过程是以质心C和半径r分割样本空间，每个节点是一个超球体。
+</code></pre>
+<p> ‘kd_tree’ 构造kd树存储数据以便对其进行快速检索的树形数据结构，kd树也就是数据结构中的二叉树。以中值切分构造的树，每个结点是一个超矩形，在维数小于20时效率高。<br> ‘brute’ 使用暴力搜索.也就是线性扫描，当训练集很大时，计算非常耗时<br> ‘auto’ 会基于传入fit方法的内容，选择最合适的算法。 	</p>
+</li>
+<li><pre><code>leaf_size（叶子数量）: int, 可选参数(默认为 30) 	传入BallTree或者KDTree算法的叶子数量。此参数会影响构建、查询BallTree或者KDTree的速度，以及存储BallTree或者KDTree所需要的内存大小。 此可选参数根据是否是问题所需选择性使用。 	
+</code></pre>
+</li>
+<li><pre><code>p: integer, 可选参数(默认为 2)
+</code></pre>
+</li>
+</ul>
+<p> 	</p>
+<p>用于Minkowski metric（闵可夫斯基空间）的超参数。p &#x3D; 1, 相当于使用曼哈顿距离 (l1)，p &#x3D;         2, 相当于使用欧几里得距离(l2) 对于任何 p ，使用的是闵可夫斯基空间(l_p)</p>
+<ul>
+<li>metric（矩阵）: string or callable, 默认为 ‘minkowski’</li>
+</ul>
+<p>用于树的距离矩阵。默认为闵可夫斯基空间，如果和p&#x3D;2一块使用相当于使用标准欧几里得矩阵. 所有可用的矩阵列表请查询 DistanceMetric 的文档。</p>
+<ul>
+<li>metric_params（矩阵参数）: dict, 可选参数(默认为 None)</li>
+</ul>
+<p>给矩阵方法使用的其他的关键词参数。</p>
+<ul>
+<li>n_jobs: int, 可选参数(默认为 1)</li>
+</ul>
+<p>用于搜索邻居的，可并行运行的任务数量。如果为-1, 任务数量设置为CPU核的数量。不会影响fit方法。</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>含义</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th>fit(X, y)</th>
+<th>使用X作为训练数据，y作为目标值（类似于标签）来拟合模型。</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th>get_params([deep])</th>
+<th>获取估值器的参数。</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th>kneighbors([X, n_neighbors, return_distance])</th>
+<th>查找一个或几个点的K个邻居。</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th>kneighbors_graph([X, n_neighbors, mode])</th>
+<th>计算在X数组中每个点的k邻居的（权重）图。</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th>predict(X)</th>
+<th>给提供的数据预测对应的标签。</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th>predict_proba(X)</th>
+<th>返回测试数据X的概率估值。</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th>score(X, y[, sample_weight])</th>
+<th>返回给定测试数据和标签的平均准确值。</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th>set_params(**params)</th>
+<th>设置估值器的参数。</th>
+</tr>
+</thead>
+</table>
+<h1 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h1><p>卷积神经网络、BP神经网络，机器学习，深度学习，神经网络功能越来越强大。让人看到未来强人工智能的希望——即机器有自己的思维。当然，这还比较遥远。“人工智能”，先有人工才有智能，正因为人工收集采集成千上万的数据，才能训练好一个比较可靠的模型。真正机器完全有自己的思维可能还遥遥无期。好啦，今天的分享就到这里啦！欢迎感兴趣的小伙伴评论区留言哦！ </p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://www.lizhiyang.xyz">咋</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.lizhiyang.xyz/2023/08/21/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AF%B9%E5%A4%9A%E5%8F%98%E9%87%8F%E7%9A%84%E6%80%A7%E5%88%AB%E7%BB%93%E6%9E%9C%E9%A2%84%E6%B5%8B/">https://www.lizhiyang.xyz/2023/08/21/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AF%B9%E5%A4%9A%E5%8F%98%E9%87%8F%E7%9A%84%E6%80%A7%E5%88%AB%E7%BB%93%E6%9E%9C%E9%A2%84%E6%B5%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.lizhiyang.xyz" target="_blank">咋的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://pic-bed-ar2.pages.dev/img/1.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/08/21/%E5%9F%BA%E4%BA%8Eopencv%E7%9A%84%E4%BA%BA%E8%84%B8%E6%A3%80%E6%B5%8B/" title="基于opencv的人脸检测"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic-bed-ar2.pages.dev/img/5.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于opencv的人脸检测</div></div></a></div><div class="next-post pull-right"><a href="/2023/08/21/2022%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E4%B8%80%E5%88%87%E9%83%BD%E5%9C%A8%E6%85%A2%E6%85%A2%E5%8F%98%E5%A5%BD/" title="2022年度总结——一切都在慢慢变好"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic-bed-ar2.pages.dev/img/24.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">2022年度总结——一切都在慢慢变好</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic-bed-ar2.pages.dev/img/12.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">咋</div><div class="author-info__description">在心里种花，人生才不会枯萎</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">73</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/lzypython"><i class="fab fa-github"></i><span>🚗前往主页...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lzypython" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:a17730209318@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">希望你会喜欢这里</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">一、什么是神经网络？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">二、神经网络的工作原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E9%99%85%E5%9C%BA%E6%99%AF%E6%8F%8F%E8%BF%B0"><span class="toc-number">3.</span> <span class="toc-text">三、实际场景描述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%BB%A3%E7%A0%81"><span class="toc-number">4.</span> <span class="toc-text">四、代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81KNeighborsClassifier%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">五、KNeighborsClassifier算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">六、总结</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By 咋</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><script defer src="/js/light.js"></script><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script defer src="/js/cursor.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 190px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 160px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://pic-bed-ar2.pages.dev/img/8.jpg);"> <a class="categoryBar-list-link" href="categories/Pytorch/">Pytorch</a><span class="categoryBar-list-count">17</span><span class="categoryBar-list-descr">Pytorch</span></li><li class="categoryBar-list-item" style="background:url(https://pic-bed-ar2.pages.dev/img/9.jpg);"> <a class="categoryBar-list-link" href="categories/Opencv/">Opencv</a><span class="categoryBar-list-count">27</span><span class="categoryBar-list-descr">实战项目</span></li><li class="categoryBar-list-item" style="background:url(https://pic-bed-ar2.pages.dev/img/17.jpg);"> <a class="categoryBar-list-link" href="categories/数据结构和算法/">数据结构和算法</a><span class="categoryBar-list-count">17</span><span class="categoryBar-list-descr">Opencv</span></li><li class="categoryBar-list-item" style="background:url(https://pic-bed-ar2.pages.dev/img/11.jpg);"> <a class="categoryBar-list-link" href="categories/实战项目/">实战项目</a><span class="categoryBar-list-count">11</span><span class="categoryBar-list-descr">数据结构与算法</span></li><li class="categoryBar-list-item" style="background:url(https://pic-bed-ar2.pages.dev/img/15.jpg);"> <a class="categoryBar-list-link" href="categories/年度总结/">年度总结</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">年度总结</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var qweather_key = 'b16a1fa0e63c46a4b8f28abfb06ae3fe';
+  var gaud_map_key = 'e2b04289e870b005374ee030148d64fd&s=rsv3';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '113.34532,23.15624';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v6.2.0" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="主题版本Butterfly_v4.3.1" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" data-title="本站采用多线部署，主线路托管于Vercel" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vercel-brightgreen?style=flat&amp;logo=Vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://dashboard.4everland.org/" style="margin-inline:5px" data-title="本站采用多线部署，备用线路托管于4EVERLAND" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-4EVERLAND-22DDDD?style=flat&amp;logo=IPFS" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="/js/runtime.js"></script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2023/08/20/孤注一掷——基于文心Ernie-3-0大模型的影评情感分析/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic-bed-ar2.pages.dev/img/13.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-08-20</span><a class="blog-slider__title" href="2023/08/20/孤注一掷——基于文心Ernie-3-0大模型的影评情感分析/" alt="">孤注一掷——基于文心Ernie-3.0大模型的影评情感分析</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2023/08/20/孤注一掷——基于文心Ernie-3-0大模型的影评情感分析/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2023/08/21/2022年度总结——一切都在慢慢变好/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic-bed-ar2.pages.dev/img/24.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-08-21</span><a class="blog-slider__title" href="2023/08/21/2022年度总结——一切都在慢慢变好/" alt="">2022年度总结——一切都在慢慢变好</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2023/08/21/2022年度总结——一切都在慢慢变好/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2023/08/21/Opencv实战案例——模板匹配实现银行卡号识别（附详细介绍及完整代码下载地址）/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic-bed-ar2.pages.dev/img/33.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-08-21</span><a class="blog-slider__title" href="2023/08/21/Opencv实战案例——模板匹配实现银行卡号识别（附详细介绍及完整代码下载地址）/" alt="">Opencv实战案例——模板匹配实现银行卡号识别（附详细介绍及完整代码下载地址）</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2023/08/21/Opencv实战案例——模板匹配实现银行卡号识别（附详细介绍及完整代码下载地址）/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2023/08/21/Cloud-Studio实战——热门视频Top100爬虫应用开发/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic-bed-ar2.pages.dev/img/5.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-08-21</span><a class="blog-slider__title" href="2023/08/21/Cloud-Studio实战——热门视频Top100爬虫应用开发/" alt="">Cloud Studio实战——热门视频Top100爬虫应用开发</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2023/08/21/Cloud-Studio实战——热门视频Top100爬虫应用开发/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2023/08/20/13-用Gpu训练/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic-bed-ar2.pages.dev/img/31.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-08-20</span><a class="blog-slider__title" href="2023/08/20/13-用Gpu训练/" alt="">13.用Gpu训练</a><div class="blog-slider__text">pycharm 连接远程服务器，采用xshell和xrtp相配合的方式进行训练，采用GPU训练，加速训练！</div><a class="blog-slider__button" href="2023/08/20/13-用Gpu训练/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2023/08/20/16-Unet/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic-bed-ar2.pages.dev/img/32.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-08-20</span><a class="blog-slider__title" href="2023/08/20/16-Unet/" alt="">16.Unet</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2023/08/20/16-Unet/" alt="">详情   </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '1s');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '2');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__bounceInRight');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body></html>
