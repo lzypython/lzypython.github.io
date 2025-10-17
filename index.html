@@ -50,7 +50,8 @@
     rightside: false,
   },
   autoDarkmode: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+}</script><script id="config-diff">
+  var GLOBAL_CONFIG_SITE = {
   title: '咋的个人博客',
   isPost: false,
   isHome: true,
@@ -137,7 +138,7 @@
       win.activateLightMode = function () {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
         }
       }
       const t = saveToLocal.get('theme')
